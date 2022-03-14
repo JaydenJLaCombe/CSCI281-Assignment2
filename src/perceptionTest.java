@@ -23,8 +23,6 @@ public class perceptionTest {
 
         // Welcome Screen
 
-        //Test
-
         ImageIcon welcome = new ImageIcon("psi_cards/welcome.png");
 
 
