@@ -36,13 +36,16 @@ public class perceptionTest {
 
         if (play != 0) System.exit(0);
 
-        int rightAnswers = 0;
-        int wrongAnswers = 0;
+        int colorRight = 0;
+        int suitRight = 0;
+        int bothRight = 0;
 
         // Play 5 More Loop
 
         int continueOrEndGame = 1;
         int roundCounter = 0;
+
+        String scoreboard = "";
 
         while (continueOrEndGame == 1) {
 
@@ -50,13 +53,13 @@ public class perceptionTest {
 
             String chooseTestString = ("Which perception test would you like to preform?");
             String testString = ("");
-            String[] testButtons = {"suit", "Color", "Both"};
+            String[] testButtons = {"Suit", "Color", "Both"};
 
             int testChosen = JOptionPane.showOptionDialog(null, chooseTestString, "Choose Test",
                     JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, questionIcon, testButtons, testButtons[0]);
 
             switch (testChosen) {
-                case 0 -> testString = "suit";
+                case 0 -> testString = "Suit";
                 case 1 -> testString = "Color";
                 case 2 -> testString = "Both";
             }
@@ -84,22 +87,24 @@ public class perceptionTest {
 
                 String[] next = {"Next"};
 
+                String testPerception;
+
                 switch (testString) {
-                    case "suit" -> {
-                        String suitResults = ("The suit you perceived -> ");
+                    case "Suit" -> {
+                        testPerception = ("The suit you perceived -> ");
+
                         int suitRepeatInt = JOptionPane.showOptionDialog(null, whatSuit, "Choose suit",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, unknownIcon, suitList, suitList[0]);
 
-                        suitResults += (suitList[suitRepeatInt] + "\n" + randomSuitDialog + "\n");
+                        testPerception += (suitList[suitRepeatInt] + "\n" + randomSuitDialog + "\n");
                         if (Objects.equals(suitList[suitRepeatInt], suitList[randomSuit])) {
-                            suitResults += winningRound;
-                            rightAnswers += 1;
+                            testPerception += winningRound;
+                            suitRight += 1;
                         } else {
-                            suitResults += losingRound;
-                            wrongAnswers += 1;
+                            testPerception += losingRound;
                         }
 
-                        int results = JOptionPane.showOptionDialog(null, suitResults, "Results",
+                        int results = JOptionPane.showOptionDialog(null, testPerception, "Results",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, randomIcon, next, next[0]);
 
                         if (results != 0) System.exit(0);
@@ -109,20 +114,19 @@ public class perceptionTest {
 
                     }
                     case "Color" -> {
-                        String colorResults = ("The color you perceived -> ");
+                        testPerception = ("The color you perceived -> ");
                         int colorRepeatInt = JOptionPane.showOptionDialog(null, whatColor, "Choose Color",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, unknownIcon, colorList, colorList[0]);
 
-                        colorResults += (colorList[colorRepeatInt] + "\n" + randomColorDialog + "\n");
+                        testPerception += (colorList[colorRepeatInt] + "\n" + randomColorDialog + "\n");
                         if (Objects.equals(colorList[colorRepeatInt], colorList[randomColor])) {
-                            colorResults += winningRound;
-                            rightAnswers += 1;
+                            testPerception += winningRound;
+                            colorRight += 1;
                         } else {
-                            colorResults += losingRound;
-                            wrongAnswers++;
+                            testPerception += losingRound;
                         }
 
-                        int results = JOptionPane.showOptionDialog(null, colorResults, "Results",
+                        int results = JOptionPane.showOptionDialog(null, testPerception, "Results",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, randomIcon, next, next[0]);
 
                         if (results != 0) System.exit(0);
@@ -138,7 +142,6 @@ public class perceptionTest {
                         String bothSuitDialog = ("Please enter your second choice. \nWhich suit do you perceive?");
                         String colorResults = ("The color you perceived -> ");
                         String suitResults = ("The suit you perceived -> ");
-
 
                         int colorRepeatInt = JOptionPane.showOptionDialog(null, bothColorDialog, "Choose Color",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, unknownIcon, colorList, colorList[0]);
@@ -159,30 +162,25 @@ public class perceptionTest {
                         if (Objects.equals(colorChosenUser, colorChosenRandom) && (!Objects.equals(suitChosenUser, suitChosenRandom))) {
 
                             bothIfString = (colorResults + colorChosenUser + "\n" + randomColorDialog + "\n" + "Good perception on color!\n\n");
-                            rightAnswers += 1;
+                            colorRight++;
                             bothIfString += (suitResults + suitChosenUser + "\n" + randomSuitDialog + "\n" + "Not quite!");
-                            wrongAnswers += 1;
 
                         } else if (!Objects.equals(colorChosenUser, colorChosenRandom) && (Objects.equals(suitChosenUser, suitChosenRandom))) {
 
                             bothIfString = (suitResults + suitChosenUser + "\n" + randomSuitDialog + "\n" + "Good perception on suit!\n\n");
-                            rightAnswers += 1;
+                            suitRight++;
                             bothIfString += (colorResults + colorChosenUser + "\n" + randomColorDialog + "\n" + "Not quite!\n\n");
-                            wrongAnswers += 1;
 
                         } else if (Objects.equals(colorChosenUser, colorChosenRandom) && (Objects.equals(suitChosenUser, suitChosenRandom))) {
 
                             bothIfString = (colorResults + colorChosenUser + "\n" + randomColorDialog + "\n"  + "Good perception on color!\n\n");
-                            rightAnswers += 1;
                             bothIfString += (suitResults + suitChosenUser + "\n" + randomSuitDialog + "\n" + "Good perception on suit!");
-                            rightAnswers += 1;
+                            bothRight++;
 
                         } else {
 
                             bothIfString = (suitResults + suitChosenUser + "\n" + randomSuitDialog + "\n" + "Not quite!\n\n");
-                            wrongAnswers += 1;
                             bothIfString += (colorResults + colorChosenUser + "\n" + randomColorDialog + "\n" + "Not quite!");
-                            wrongAnswers += 1;
 
                         }
 
@@ -199,17 +197,52 @@ public class perceptionTest {
                 }
             }
 
-            String[] endGame = {"Quit", "Play Another 5 Rounds"};
+            String colorScore = "";
+            String suitScore = "";
+            String bothScore = "";
             String roundCount = "Total Rounds Played -> " + roundCounter;
-            String correct = "Total Correct -> " + rightAnswers;
-            String incorrect = "Total Incorrect -> " + wrongAnswers;
-            String scoreboard = (roundCount + "\n" + correct + "\n" + incorrect + "\nWould you like to play again?");
 
+            if (colorRight > 0 && suitRight == 0 && bothRight == 0) {
+                colorScore = "Your Total Color Score -> " + colorRight;
+                scoreboard = (roundCount + "\n" + colorScore +
+                        "\nWould you like to play again?");
+            } else if (colorRight == 0 && suitRight > 0 && bothRight == 0) {
+                suitScore = "Your Total Suit Score ->  -> " + suitRight;
+                scoreboard = (roundCount + "\n" + suitScore +
+                        "\nWould you like to play again?");
+            } else if (colorRight == 0 && suitRight == 0 && bothRight > 0) {
+                bothScore = "You Total Both Score -> " + bothRight;
+                scoreboard = (roundCount + "\n" + bothScore +
+                        "\nWould you like to play again?");
+            } else if (colorRight > 0 && suitRight > 0 && bothRight == 0) {
+                colorScore = "Your Total Color Score -> " + colorRight;
+                suitScore = "Your Total Suit Score ->  -> " + suitRight;
+                scoreboard = (roundCount + "\n" + colorScore + "\n" + suitScore +
+                        "\nWould you like to play again?");
+            } else if (colorRight > 0 && suitRight == 0 && bothRight > 0) {
+                colorScore = "Your Total Color Score -> " + colorRight;
+                bothScore = "You Total Both Score -> " + bothRight;
+                scoreboard = (roundCount + "\n" + colorScore + "\n" + bothScore +
+                        "\nWould you like to play again?");
+            } else if (colorRight == 0 && suitRight > 0 && bothRight > 0) {
+                suitScore = "Your Total Suit Score ->  -> " + suitRight;
+                bothScore = "You Total Both Score -> " + bothRight;
+                scoreboard = (roundCount + "\n" + suitScore + "\n" + bothScore +
+                        "\nWould you like to play again?");
+            } else if (colorRight > 0 && suitRight > 0 && bothRight > 0) {
+                colorScore = "Your Total Color Score -> " + colorRight;
+                suitScore = "Your Total Suit Score ->  -> " + suitRight;
+                bothScore = "You Total Both Score -> " + bothRight;
+                scoreboard = (roundCount + "\n" + colorScore + "\n" + suitScore + "\n" + bothScore +
+                        "\nWould you like to play again?");
+            } else {
+                scoreboard = (roundCount + "\n" + "You scored no points" +
+                        "\nWould you like to play again?");
+            }
+
+            String[] endGame = {"Quit", "Play Another 5 Rounds"};
             continueOrEndGame = JOptionPane.showOptionDialog(null, scoreboard, "Game Over",
                     JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, questionIcon, endGame, 0);
-
-            System.out.println(continueOrEndGame);
-
         }
     }
 }
